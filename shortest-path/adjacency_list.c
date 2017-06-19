@@ -8,6 +8,7 @@
 
 #include<stdio.h>
 #include<stdlib.h>
+#include<sys/time.h>
 
 // Graph Node
 struct ADL_Node{
@@ -73,9 +74,17 @@ void printGraph(struct Graph* graph){
 }
 
 int main(int argc, char **argv){
-	int v =5;
-	struct Graph *graph = createGraph(v);
 	
+	struct timeval before;
+	struct timeval after;
+	double time;
+	int v =5;
+
+	// Time start before creating graph
+	gettimeofday(&before, NULL);
+
+	struct Graph *graph = createGraph(v);
+
 	addEdge(graph, 0, 1);
     addEdge(graph, 0, 4);
     addEdge(graph, 1, 2);
@@ -84,8 +93,13 @@ int main(int argc, char **argv){
     addEdge(graph, 2, 3);
     addEdge(graph, 3, 4);
 
+    // Stop time after graph creation
+    gettimeofday(&after, NULL);
+
+    time = (double)(after.tv_sec -before.tv_sec) + (double)(after.tv_usec -before.tv_usec)/1e6;
 	//print graph
 	printGraph(graph);
 
+	printf("\nTotal Graph creation time : %f seconds\n\n", time);
 	return 0;
 }
